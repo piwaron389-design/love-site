@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>به عشق زندگی من ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #0a0f2a, #03050b);
+            color: white;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            pointer-events: none;
+        }
+
+        .card {
+            background: rgba(20, 20, 40, 0.6);
+            backdrop-filter: blur(15px);
+            border-radius: 60px;
+            padding: 40px 30px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 80, 120, 0.3);
+            pointer-events: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .heart-icon {
+            font-size: 80px;
+            animation: heartbeat 1.2s infinite ease-in-out;
+            display: inline-block;
+            cursor: pointer;
+            filter: drop-shadow(0 0 15px #ff3366);
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); text-shadow: 0 0 25px #ff6699; }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff99cc, #ff3366);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 20px 0 10px;
+        }
+
+        .sub {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .message-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 40px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 1.1rem;
+            line-height: 1.8rem;
+            border-right: 4px solid #ff3366;
+        }
+
+        .counter {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .counter-item {
+            background: rgba(0, 0, 0, 0.5);
+            flex: 1;
+            padding: 12px;
+            border-radius: 30px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .counter-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff88aa;
+            display: block;
+        }
+
+        .counter-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .question {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 25px 0 20px;
+            background: linear-gradient(135deg, #ff99cc, #ff3366);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff3366, #ff6699);
+            color: white;
+            box-shadow: 0 5px 20px rgba(255, 51, 102, 0.4);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(255, 51, 102, 0.6);
+        }
+
+        .btn-no {
+            background: rgba(100, 100, 130, 0.7);
+            color: #ddd;
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+
+        .response {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 40px;
+            font-size: 1rem;
+            min-height: 80px;
+        }
+
+        footer {
+            margin-top: 25px;
+            font-size: 0.7rem;
+            opacity: 0.6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e1a3a, #2a1a3a);
+            padding: 40px;
+            border-radius: 70px;
+            text-align: center;
+            max-width: 400px;
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0% { transform: scale(0.3); opacity: 0; }
+            80% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .close-modal {
+            background: #ff3366;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 40px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            font-size: 24px;
+            color: white;
+        }
+
+        @media (max-width: 550px) {
+            .card { padding: 25px 20px; }
+            h1 { font-size: 1.8rem; }
+            .question { font-size: 1.4rem; }
+            .btn { padding: 10px 20px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<div class="content">
+    <div class="card">
+        <div class="heart-icon" id="clickHeart">
+            <i class="fas fa-heart"></i>
+        </div>
+        <h1>بی‌نهایت دوستت دارم</h1>
+        <div class="sub">✨ به عزیزترینم ✨</div>
+
+        <div class="message-box" id="typewriterMessage">
+            بارگذاری...
+        </div>
+
+        <div class="counter">
+            <div class="counter-item"><span class="counter-number" id="days">0</span><span class="counter-label">روز</span></div>
+            <div class="counter-item"><span class="counter-number" id="hours">0</span><span class="counter-label">ساعت</span></div>
+            <div class="counter-item"><span class="counter-number" id="minutes">0</span><span class="counter-label">دقیقه</span></div>
+            <div class="counter-item"><span class="counter-number" id="seconds">0</span><span class="counter-label">ثانیه</span></div>
+        </div>
+
+        <div class="question">
+            ❤️ تو هم منو دوست داری؟ ❤️
+        </div>
+
+        <div class="buttons">
+            <button class="btn btn-yes" id="yesBtn"><i class="fas fa-heart"></i> بله، تا ابد</button>
+            <button class="btn btn-no" id="noBtn"><i class="fas fa-times"></i> نه</button>
+        </div>
+
+        <div class="response" id="responseArea">
+            💕 منتظر جواب تو هستم عزیزم 💕
+        </div>
+
+        <footer>برای تو که نوری به زندگی منی 🌹</footer>
+    </div>
+</div>
+
+<div class="music-btn" id="musicBtn">
+    <i class="fas fa-music"></i>
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <i class="fas fa-heart" style="font-size: 80px; color: #ff3366; animation: heartbeat 1s infinite;"></i>
+        <h2 style="margin: 20px 0;">😭💖 عاشقتم عزیزم! 💖😭</h2>
+        <p>می‌دونستم که دوستم داری! تو بهترین اتفاق زندگی منی. قول میدم همیشه عاشقت باشم.</p>
+        <p style="margin-top: 15px; font-size: 2rem;">🌹👫🌹</p>
+        <button class="close-modal" onclick="closeModal()">بستم، دوستت دارم ❤️</button>
+    </div>
+</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+        }
+    }
+</script>
+
+<script type="module">
+    import * as THREE from 'three';
+
+    const canvas = document.getElementById('bgCanvas');
+    const scene = new THREE.Scene();
+    scene.background = null;
+    scene.fog = new THREE.FogExp2(0x03050b, 0.003);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 30;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+
+    // قلب سه‌بعدی با ذرات
+    const heartGeometry = new THREE.BufferGeometry();
+    const particleCount = 3000;
+    const positions = new Float32Array(particleCount * 3);
+
+    for (let i = 0; i < particleCount; i++) {
+        const t = Math.random() * Math.PI * 2;
+        const u = Math.random() * Math.PI * 2;
+        const x = 16 * Math.pow(Math.sin(t), 3);
+        const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
+        const z = Math.sin(u) * 4;
+        positions[i*3] = x * 0.6 + (Math.random() - 0.5) * 0.6;
+        positions[i*3+1] = y * 0.6 + (Math.random() - 0.5) * 0.6;
+        positions[i*3+2] = z + (Math.random() - 0.5) * 0.6;
+    }
+    heartGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const heartMaterial = new THREE.PointsMaterial({ color: 0xff4466, size: 0.22, blending: THREE.AdditiveBlending });
+    const heart = new THREE.Points(heartGeometry, heartMaterial);
+    scene.add(heart);
+
+    // ستاره‌ها
+    const starGeo = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(2000 * 3);
+    for (let i = 0; i < 2000; i++) {
+        starPositions[i*3] = (Math.random() - 0.5) * 400;
+        starPositions[i*3+1] = (Math.random() - 0.5) * 200;
+        starPositions[i*3+2] = (Math.random() - 0.5) * 100 - 50;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.15 }));
+    scene.add(stars);
+
+    let time = 0;
+    function animate() {
+        requestAnimationFrame(animate);
+        time += 0.008;
+        heart.rotation.y = time * 0.3;
+        heart.rotation.x = Math.sin(time * 0.2) * 0.2;
+        heart.rotation.z = Math.cos(time * 0.15) * 0.1;
+        stars.rotation.y = time * 0.05;
+        camera.position.x = Math.sin(time * 0.1) * 1.5;
+        camera.lookAt(0, 0, 0);
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+</script>
+
+<script>
+    // ========== تنظیمات JSONBin برای ذخیره پاسخ ==========
+    // برو به https://jsonbin.io و یک Bin جدید بساز با این محتوا: {"answer": null, "answered": false, "time": null}
+    // سپس BIN_ID و API_KEY را اینجا جایگذاری کن
+    const BIN_ID = "YOUR_BIN_ID";        // <-- جایگذاری کن
+    const API_KEY = "YOUR_API_KEY";      // <-- جایگذاری کن
+
+    // ========== تایپ‌رایتر ==========
+    const messages = [
+        "عشق من، هر روز با تو مثل یک رویای قشنگه... 💕",
+        "نگاه تو آرامش قلب منه 😍",
+        "دوستت دارم نه برای چیزی که هستی، برای چیزی که با تو میشم 🌹",
+        "تو دلیلی هستی که هر روز صبح با لبخند بیدار میشم ☀️",
+        "عزیزم، زندگی بدون تو معنی نداره 💖"
+    ];
+    let msgIndex = 0;
+    const msgBox = document.getElementById('typewriterMessage');
+    function typeWriter(text, i) {
+        if (i < text.length) {
+            msgBox.innerHTML = text.substring(0, i+1) + '<span style="animation: blink 0.7s infinite;">|</span>';
+            setTimeout(() => typeWriter(text, i+1), 50);
+        } else {
+            msgBox.innerHTML = text;
+            setTimeout(() => {
+                msgIndex = (msgIndex + 1) % messages.length;
+                typeWriter(messages[msgIndex], 0);
+            }, 5000);
+        }
+    }
+    typeWriter(messages[0], 0);
+    const style = document.createElement('style');
+    style.textContent = `@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }`;
+    document.head.appendChild(style);
+
+    // ========== شمارنده عاشقی ==========
+    const startDate = new Date(2023, 5, 15); // سال, ماه-1, روز - تغییر بده
+    function updateCounter() {
+        const now = new Date();
+        const diff = now - startDate;
+        document.getElementById('days').innerText = Math.floor(diff / (1000*60*60*24));
+        document.getElementById('hours').innerText = Math.floor((diff % (86400000)) / (1000*60*60));
+        document.getElementById('minutes').innerText = Math.floor((diff % (3600000)) / (1000*60));
+        document.getElementById('seconds').innerText = Math.floor((diff % (60000)) / 1000);
+    }
+    updateCounter();
+    setInterval(updateCounter, 1000);
+
+    // ========== کانفتی و قلب ==========
+    function createHeartExplosion() {
+        for (let i = 0; i < 150; i++) {
+            const heart = document.createElement('div');
+            heart.innerHTML = ['❤️','💖','💗','💓','💘'][Math.floor(Math.random()*5)];
+            heart.style.position = 'fixed';
+            heart.style.left = '50%';
+            heart.style.top = '50%';
+            heart.style.fontSize = (20 + Math.random() * 50) + 'px';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '9999';
+            heart.style.transition = 'all 2s ease-out';
+            document.body.appendChild(heart);
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 150 + Math.random() * 200;
+            const x = Math.cos(angle) * dist;
+            const y = Math.sin(angle) * dist;
+            setTimeout(() => {
+                heart.style.transform = `translate(${x}px, ${y}px)`;
+                heart.style.opacity = '0';
+            }, 10);
+            setTimeout(() => heart.remove(), 2000);
+        }
+    }
+
+    function createConfetti() {
+        for (let i = 0; i < 80; i++) {
+            const conf = document.createElement('div');
+            conf.innerHTML = '🎉';
+            conf.style.position = 'fixed';
+            conf.style.left = Math.random() * 100 + '%';
+            conf.style.top = '-30px';
+            conf.style.fontSize = (20 + Math.random() * 30) + 'px';
+            conf.style.pointerEvents = 'none';
+            conf.style.zIndex = '9998';
+            conf.style.transition = 'all 3s linear';
+            document.body.appendChild(conf);
+            setTimeout(() => {
+                conf.style.transform = `translateY(${window.innerHeight + 50}px) rotate(${Math.random() * 360}deg)`;
+                conf.style.opacity = '0';
+            }, 10);
+            setTimeout(() => conf.remove(), 3000);
+        }
+    }
+
+    // ========== مودال ==========
+    function showModal() {
+        document.getElementById('modal').style.display = 'flex';
+        createHeartExplosion();
+        createConfetti();
+    }
+    window.closeModal = function() {
+        document.getElementById('modal').style.display = 'none';
+    };
+
+    // ========== ذخیره پاسخ در JSONBin ==========
+    async function saveAnswer(answer) {
+        if (!BIN_ID || BIN_ID === "YOUR_BIN_ID") {
+            console.warn("JSONBin تنظیم نشده، پاسخ ذخیره نمی‌شود");
+            return;
+        }
+        try {
+            const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                headers: { 'X-Master-Key': API_KEY }
+            });
+            const data = await getRes.json();
+            const record = data.record;
+            record.answer = answer;
+            record.answered = true;
+            record.time = new Date().toLocaleString('fa-IR');
+            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                body: JSON.stringify(record)
+            });
+        } catch(e) { console.error("خطا در ذخیره پاسخ", e); }
+    }
+
+    // ========== منطق دکمه‌ها ==========
+    let answered = false;
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const responseDiv = document.getElementById('responseArea');
+
+    yesBtn.addEventListener('click', () => {
+        if (answered) return;
+        answered = true;
+        responseDiv.innerHTML = '😭💖 عاشقتم عزیز دلم! 💖😭 تا ابد مال منی...';
+        responseDiv.style.background = 'rgba(255,51,102,0.3)';
+        showModal();
+        saveAnswer('بله');
+        yesBtn.disabled = true;
+        noBtn.disabled = true;
+    });
+
+    let escapeCount = 0;
+    noBtn.addEventListener('mouseenter', () => {
+        if (answered) return;
+        const container = document.querySelector('.buttons');
+        const rect = noBtn.getBoundingClientRect();
+        const maxX = container.clientWidth - rect.width - 20;
+        const maxY = container.clientHeight - rect.height - 20;
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+        noBtn.style.position = 'relative';
+        noBtn.style.left = `${x - 10}px`;
+        noBtn.style.top = `${y - 10}px`;
+        escapeCount++;
+        if (escapeCount > 3) {
+            responseDiv.innerHTML = '😂 عزیزم میدونم شوخیه! بیا بگو بله 😘';
+        }
+    });
+
+    noBtn.addEventListener('click', () => {
+        if (answered) return;
+        responseDiv.innerHTML = '💔 نه؟ دلم میگه دوسم داری! بیا دوباره جواب بده 💕';
+        noBtn.style.left = '0';
+        noBtn.style.top = '0';
+        noBtn.style.position = 'static';
+        saveAnswer('نه');
+        setTimeout(() => {
+            if (!answered) responseDiv.innerHTML = '💕 منتظر جواب تو هستم عزیزم 💕';
+        }, 2500);
+    });
+
+    document.getElementById('clickHeart').addEventListener('click', () => {
+        createHeartExplosion();
+        responseDiv.innerHTML = '❤️ میبینی چقدر دوستت دارم؟ جوابمو بده ❤️';
+        setTimeout(() => {
+            if (!answered && responseDiv.innerHTML.includes('میبینی')) {
+                responseDiv.innerHTML = '💕 منتظر جواب تو هستم عزیزم 💕';
+            }
+        }, 3000);
+    });
+
+    // موزیک (اختیاری)
+    let audio = null;
+    let musicPlaying = false;
+    const musicBtn = document.getElementById('musicBtn');
+    musicBtn.addEventListener('click', () => {
+        if (!audio) {
+            audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+            audio.loop = true;
+            audio.volume = 0.2;
+        }
+        if (musicPlaying) {
+            audio.pause();
+            musicBtn.innerHTML = '<i class="fas fa-music-slash"></i>';
+        } else {
+            audio.play().catch(e => console.log("audio play failed"));
+            musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+        }
+        musicPlaying = !musicPlaying;
+    });
+</script>
+</body>
+</html>

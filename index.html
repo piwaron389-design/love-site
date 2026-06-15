@@ -1,589 +1,478 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>به عشق زندگی من ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>برای تو که همیشه موندنی‌ای</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #0a0f2a, #03050b);
-            color: white;
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        canvas {
+        /* ذرات عاشقانه متحرک */
+        .particles {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .content {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+        .heart-particle {
+            position: absolute;
+            color: rgba(255, 80, 120, 0.6);
+            font-size: 20px;
+            animation: floatUp 8s linear infinite;
+            user-select: none;
             pointer-events: none;
         }
 
-        .card {
-            background: rgba(20, 20, 40, 0.6);
-            backdrop-filter: blur(15px);
-            border-radius: 60px;
-            padding: 40px 30px;
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 80, 120, 0.3);
-            pointer-events: auto;
-            transition: transform 0.3s ease;
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.3);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2);
+                opacity: 0;
+            }
         }
 
-        .heart-icon {
-            font-size: 80px;
-            animation: heartbeat 1.2s infinite ease-in-out;
+        /* کانتینر اصلی */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 600px;
+            margin: 30px auto;
+            perspective: 1000px;
+        }
+
+        /* کارت اصلی با افکت سه بعدی */
+        .love-card {
+            background: rgba(20, 25, 45, 0.75);
+            backdrop-filter: blur(16px);
+            border-radius: 55px;
+            padding: 30px 25px 40px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 100, 150, 0.3);
+            animation: cardGlow 3s infinite alternate;
+        }
+
+        @keyframes cardGlow {
+            0% {
+                box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 80, 120, 0.2);
+                border-color: rgba(255, 100, 150, 0.3);
+            }
+            100% {
+                box-shadow: 0 35px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 80, 120, 0.6);
+                border-color: rgba(255, 120, 170, 0.8);
+            }
+        }
+
+        /* هدر قلب تپنده */
+        .heartbeat-area {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .beating-heart {
+            font-size: 85px;
             display: inline-block;
-            cursor: pointer;
+            animation: heartbeat 1.2s infinite ease-in-out;
             filter: drop-shadow(0 0 15px #ff3366);
         }
 
         @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); text-shadow: 0 0 25px #ff6699; }
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, #ff99cc, #ff3366);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin: 20px 0 10px;
-        }
-
-        .sub {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        .message-box {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 40px;
-            padding: 20px;
-            margin: 20px 0;
-            font-size: 1.1rem;
-            line-height: 1.8rem;
-            border-right: 4px solid #ff3366;
-        }
-
-        .counter {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
-        .counter-item {
-            background: rgba(0, 0, 0, 0.5);
-            flex: 1;
-            padding: 12px;
-            border-radius: 30px;
-            text-align: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .counter-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ff88aa;
-            display: block;
-        }
-
-        .counter-label {
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-
-        .question {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin: 25px 0 20px;
-            background: linear-gradient(135deg, #ff99cc, #ff3366);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 14px 30px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-family: 'Cairo', sans-serif;
-        }
-
-        .btn-yes {
-            background: linear-gradient(135deg, #ff3366, #ff6699);
-            color: white;
-            box-shadow: 0 5px 20px rgba(255, 51, 102, 0.4);
-        }
-
-        .btn-yes:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 30px rgba(255, 51, 102, 0.6);
-        }
-
-        .btn-no {
-            background: rgba(100, 100, 130, 0.7);
-            color: #ddd;
-            backdrop-filter: blur(5px);
-            position: relative;
-        }
-
-        .response {
-            margin-top: 25px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 40px;
-            font-size: 1rem;
-            min-height: 80px;
-        }
-
-        footer {
-            margin-top: 25px;
-            font-size: 0.7rem;
-            opacity: 0.6;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #1e1a3a, #2a1a3a);
-            padding: 40px;
-            border-radius: 70px;
-            text-align: center;
-            max-width: 400px;
-            animation: bounce 0.5s;
-        }
-
-        @keyframes bounce {
-            0% { transform: scale(0.3); opacity: 0; }
-            80% { transform: scale(1.05); }
+            0% { transform: scale(1); }
+            25% { transform: scale(1.2); text-shadow: 0 0 20px #ff3366; }
+            35% { transform: scale(1.1); }
+            45% { transform: scale(1.25); }
+            55% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
 
-        .close-modal {
-            background: #ff3366;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 40px;
-            margin-top: 20px;
-            cursor: pointer;
+        /* متن اصلی احساسات */
+        .message {
+            text-align: center;
+            margin: 20px 0;
         }
 
-        .music-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.5);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .message h1 {
+            color: #ffddee;
+            font-size: 2rem;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #fff, #ff99cc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .message p {
+            color: #ccd6f0;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 12px 0;
+        }
+
+        /* کانتر لحظات خاطره */
+        .counter {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 60px;
+            padding: 10px 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            backdrop-filter: blur(4px);
+        }
+
+        .counter span {
+            color: #ff88aa;
+            font-size: 1.9rem;
+            font-weight: 900;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .counter-label {
+            color: #aab3d0;
+            font-size: 0.9rem;
+        }
+
+        /* گالری عکس های مجازی با افکت */
+        .gallery {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .memory-img {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(145deg, #ff99aa, #ff5577);
+            border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 48px;
+            transition: all 0.3s ease;
             cursor: pointer;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            font-size: 24px;
-            color: white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            animation: float 3s infinite alternate;
         }
 
-        @media (max-width: 550px) {
-            .card { padding: 25px 20px; }
-            h1 { font-size: 1.8rem; }
-            .question { font-size: 1.4rem; }
-            .btn { padding: 10px 20px; font-size: 1rem; }
+        .memory-img:nth-child(2) { animation-delay: 0.5s; background: linear-gradient(145deg, #ffbb77, #ff884d); }
+        .memory-img:nth-child(3) { animation-delay: 1s; background: linear-gradient(145deg, #77ddff, #3399ff); }
+        .memory-img:nth-child(4) { animation-delay: 1.5s; background: linear-gradient(145deg, #aa88ff, #8855ff); }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-8px); }
+        }
+
+        .memory-img:hover {
+            transform: scale(1.1) rotate(3deg);
+            filter: brightness(1.2);
+        }
+
+        .memory-img:active {
+            transform: scale(0.95);
+        }
+
+        /* دکمه عاشقانه */
+        .btn-love {
+            display: block;
+            width: 80%;
+            margin: 15px auto;
+            padding: 14px 25px;
+            background: linear-gradient(95deg, #ff3366, #ff6680);
+            border: none;
+            border-radius: 50px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.4);
+        }
+
+        .btn-love:hover {
+            transform: scale(1.02);
+            background: linear-gradient(95deg, #ff5577, #ff7799);
+            box-shadow: 0 12px 28px rgba(255, 51, 102, 0.7);
+        }
+
+        .btn-love:active {
+            transform: scale(0.98);
+        }
+
+        /* پیام نهایی که با کلیک یا اسکرول ظاهر می‌شه */
+        .final-message {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 200, 200, 0.3);
+        }
+
+        .final-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .final-message h2 {
+            color: #ffccdd;
+            font-size: 1.9rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+            text-shadow: 0 0 15px #ff3366;
+        }
+
+        .final-message p {
+            color: #ffe6f0;
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .small-note {
+            font-size: 0.8rem;
+            color: #99aacc;
+            margin-top: 15px;
+        }
+
+        /* responsive */
+        @media (max-width: 500px) {
+            .love-card {
+                padding: 20px 18px 30px;
+            }
+            .message h1 {
+                font-size: 1.6rem;
+            }
+            .final-message h2 {
+                font-size: 1.5rem;
+            }
+            .final-message p {
+                font-size: 1.2rem;
+            }
+            .memory-img {
+                width: 70px;
+                height: 70px;
+                font-size: 36px;
+            }
         }
     </style>
 </head>
 <body>
 
-<canvas id="bgCanvas"></canvas>
+<div class="particles" id="particlesContainer"></div>
 
-<div class="content">
-    <div class="card">
-        <div class="heart-icon" id="clickHeart">
-            <i class="fas fa-heart"></i>
+<div class="container">
+    <div class="love-card">
+        <div class="heartbeat-area">
+            <div class="beating-heart">❤️</div>
         </div>
-        <h1>بی‌نهایت دوستت دارم</h1>
-        <div class="sub">✨ به عزیزترینم ✨</div>
 
-        <div class="message-box" id="typewriterMessage">
-            بارگذاری...
+        <div class="message">
+            <h1>عزیزترینم...</h1>
+            <p>هر لحظه بدون تو مثل قرن‌ها سردی و بی‌رنگیه.<br>
+            شاید نفهمیدی ولی تو نوری که مسیرمو روشن کردی.<br>
+            می‌دونم این روزا سخت گذشت، اما حقیقتش اینه...</p>
         </div>
 
         <div class="counter">
-            <div class="counter-item"><span class="counter-number" id="days">0</span><span class="counter-label">روز</span></div>
-            <div class="counter-item"><span class="counter-number" id="hours">0</span><span class="counter-label">ساعت</span></div>
-            <div class="counter-item"><span class="counter-number" id="minutes">0</span><span class="counter-label">دقیقه</span></div>
-            <div class="counter-item"><span class="counter-number" id="seconds">0</span><span class="counter-label">ثانیه</span></div>
+            <span class="counter-label">تعداد دفعاتی که به یادت لبخند زدم (امشب):</span><br>
+            <span id="smileCount">۰</span> <span>❤️</span>
+            <div class="counter-label">و هر بار دلم گفت چقدر دوستت دارم</div>
         </div>
 
-        <div class="question">
-            ❤️ تو هم منو دوست داری؟ ❤️
+        <div class="gallery">
+            <div class="memory-img" data-memory="خاطره اول">🌹</div>
+            <div class="memory-img" data-memory="خاطره دوم">☕</div>
+            <div class="memory-img" data-memory="خاطره سوم">🌙</div>
+            <div class="memory-img" data-memory="خاطره چهارم">🌟</div>
         </div>
 
-        <div class="buttons">
-            <button class="btn btn-yes" id="yesBtn"><i class="fas fa-heart"></i> بله، تا ابد</button>
-            <button class="btn btn-no" id="noBtn"><i class="fas fa-times"></i> نه</button>
-        </div>
+        <button class="btn-love" id="showFinalBtn">برای همیشه موندنت رو انتخاب کن ✨</button>
 
-        <div class="response" id="responseArea">
-            💕 منتظر جواب تو هستم عزیزم 💕
+        <div class="final-message" id="finalMessage">
+            <h2>💖 تا تهش بودی 💖</h2>
+            <p>«مرسی که تا تهش موندی...<br>و من تا همیشه مال توام»</p>
+            <div class="small-note">(و این فقط شروع یه قصه‌ی موندگارتره)</div>
         </div>
-
-        <footer>برای تو که نوری به زندگی منی 🌹</footer>
     </div>
 </div>
-
-<div class="music-btn" id="musicBtn">
-    <i class="fas fa-music"></i>
-</div>
-
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <i class="fas fa-heart" style="font-size: 80px; color: #ff3366; animation: heartbeat 1s infinite;"></i>
-        <h2 style="margin: 20px 0;">😭💖 عاشقتم عزیزم! 💖😭</h2>
-        <p>می‌دونستم که دوستم داری! تو بهترین اتفاق زندگی منی. قول میدم همیشه عاشقت باشم.</p>
-        <p style="margin-top: 15px; font-size: 2rem;">🌹👫🌹</p>
-        <button class="close-modal" onclick="closeModal()">بستم، دوستت دارم ❤️</button>
-    </div>
-</div>
-
-<script type="importmap">
-    {
-        "imports": {
-            "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
-        }
-    }
-</script>
-
-<script type="module">
-    import * as THREE from 'three';
-
-    const canvas = document.getElementById('bgCanvas');
-    const scene = new THREE.Scene();
-    scene.background = null;
-    scene.fog = new THREE.FogExp2(0x03050b, 0.003);
-
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 30;
-
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-
-    // قلب سه‌بعدی با ذرات
-    const heartGeometry = new THREE.BufferGeometry();
-    const particleCount = 3000;
-    const positions = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount; i++) {
-        const t = Math.random() * Math.PI * 2;
-        const u = Math.random() * Math.PI * 2;
-        const x = 16 * Math.pow(Math.sin(t), 3);
-        const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
-        const z = Math.sin(u) * 4;
-        positions[i*3] = x * 0.6 + (Math.random() - 0.5) * 0.6;
-        positions[i*3+1] = y * 0.6 + (Math.random() - 0.5) * 0.6;
-        positions[i*3+2] = z + (Math.random() - 0.5) * 0.6;
-    }
-    heartGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const heartMaterial = new THREE.PointsMaterial({ color: 0xff4466, size: 0.22, blending: THREE.AdditiveBlending });
-    const heart = new THREE.Points(heartGeometry, heartMaterial);
-    scene.add(heart);
-
-    // ستاره‌ها
-    const starGeo = new THREE.BufferGeometry();
-    const starPositions = new Float32Array(2000 * 3);
-    for (let i = 0; i < 2000; i++) {
-        starPositions[i*3] = (Math.random() - 0.5) * 400;
-        starPositions[i*3+1] = (Math.random() - 0.5) * 200;
-        starPositions[i*3+2] = (Math.random() - 0.5) * 100 - 50;
-    }
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.15 }));
-    scene.add(stars);
-
-    let time = 0;
-    function animate() {
-        requestAnimationFrame(animate);
-        time += 0.008;
-        heart.rotation.y = time * 0.3;
-        heart.rotation.x = Math.sin(time * 0.2) * 0.2;
-        heart.rotation.z = Math.cos(time * 0.15) * 0.1;
-        stars.rotation.y = time * 0.05;
-        camera.position.x = Math.sin(time * 0.1) * 1.5;
-        camera.lookAt(0, 0, 0);
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-</script>
 
 <script>
-    // ========== تنظیمات JSONBin برای ذخیره پاسخ ==========
-    // برو به https://jsonbin.io و یک Bin جدید بساز با این محتوا: {"answer": null, "answered": false, "time": null}
-    // سپس BIN_ID و API_KEY را اینجا جایگذاری کن
-    const BIN_ID = "YOUR_BIN_ID";        // <-- جایگذاری کن
-    const API_KEY = "YOUR_API_KEY";      // <-- جایگذاری کن
+    // ساخت ذرات قلب
+    function createHeartParticle() {
+        const particle = document.createElement('div');
+        particle.classList.add('heart-particle');
+        particle.innerHTML = ['❤️', '💖', '💗', '💓', '💕'][Math.floor(Math.random() * 5)];
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.fontSize = (Math.random() * 20 + 15) + 'px';
+        particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        particle.style.animationDelay = Math.random() * 5 + 's';
+        document.getElementById('particlesContainer').appendChild(particle);
 
-    // ========== تایپ‌رایتر ==========
-    const messages = [
-        "عشق من، هر روز با تو مثل یک رویای قشنگه... 💕",
-        "نگاه تو آرامش قلب منه 😍",
-        "دوستت دارم نه برای چیزی که هستی، برای چیزی که با تو میشم 🌹",
-        "تو دلیلی هستی که هر روز صبح با لبخند بیدار میشم ☀️",
-        "عزیزم، زندگی بدون تو معنی نداره 💖"
-    ];
-    let msgIndex = 0;
-    const msgBox = document.getElementById('typewriterMessage');
-    function typeWriter(text, i) {
-        if (i < text.length) {
-            msgBox.innerHTML = text.substring(0, i+1) + '<span style="animation: blink 0.7s infinite;">|</span>';
-            setTimeout(() => typeWriter(text, i+1), 50);
-        } else {
-            msgBox.innerHTML = text;
-            setTimeout(() => {
-                msgIndex = (msgIndex + 1) % messages.length;
-                typeWriter(messages[msgIndex], 0);
-            }, 5000);
-        }
-    }
-    typeWriter(messages[0], 0);
-    const style = document.createElement('style');
-    style.textContent = `@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }`;
-    document.head.appendChild(style);
-
-    // ========== شمارنده عاشقی ==========
-    const startDate = new Date(2023, 5, 15); // سال, ماه-1, روز - تغییر بده
-    function updateCounter() {
-        const now = new Date();
-        const diff = now - startDate;
-        document.getElementById('days').innerText = Math.floor(diff / (1000*60*60*24));
-        document.getElementById('hours').innerText = Math.floor((diff % (86400000)) / (1000*60*60));
-        document.getElementById('minutes').innerText = Math.floor((diff % (3600000)) / (1000*60));
-        document.getElementById('seconds').innerText = Math.floor((diff % (60000)) / 1000);
-    }
-    updateCounter();
-    setInterval(updateCounter, 1000);
-
-    // ========== کانفتی و قلب ==========
-    function createHeartExplosion() {
-        for (let i = 0; i < 150; i++) {
-            const heart = document.createElement('div');
-            heart.innerHTML = ['❤️','💖','💗','💓','💘'][Math.floor(Math.random()*5)];
-            heart.style.position = 'fixed';
-            heart.style.left = '50%';
-            heart.style.top = '50%';
-            heart.style.fontSize = (20 + Math.random() * 50) + 'px';
-            heart.style.pointerEvents = 'none';
-            heart.style.zIndex = '9999';
-            heart.style.transition = 'all 2s ease-out';
-            document.body.appendChild(heart);
-            const angle = Math.random() * Math.PI * 2;
-            const dist = 150 + Math.random() * 200;
-            const x = Math.cos(angle) * dist;
-            const y = Math.sin(angle) * dist;
-            setTimeout(() => {
-                heart.style.transform = `translate(${x}px, ${y}px)`;
-                heart.style.opacity = '0';
-            }, 10);
-            setTimeout(() => heart.remove(), 2000);
-        }
-    }
-
-    function createConfetti() {
-        for (let i = 0; i < 80; i++) {
-            const conf = document.createElement('div');
-            conf.innerHTML = '🎉';
-            conf.style.position = 'fixed';
-            conf.style.left = Math.random() * 100 + '%';
-            conf.style.top = '-30px';
-            conf.style.fontSize = (20 + Math.random() * 30) + 'px';
-            conf.style.pointerEvents = 'none';
-            conf.style.zIndex = '9998';
-            conf.style.transition = 'all 3s linear';
-            document.body.appendChild(conf);
-            setTimeout(() => {
-                conf.style.transform = `translateY(${window.innerHeight + 50}px) rotate(${Math.random() * 360}deg)`;
-                conf.style.opacity = '0';
-            }, 10);
-            setTimeout(() => conf.remove(), 3000);
-        }
-    }
-
-    // ========== مودال ==========
-    function showModal() {
-        document.getElementById('modal').style.display = 'flex';
-        createHeartExplosion();
-        createConfetti();
-    }
-    window.closeModal = function() {
-        document.getElementById('modal').style.display = 'none';
-    };
-
-    // ========== ذخیره پاسخ در JSONBin ==========
-    async function saveAnswer(answer) {
-        if (!BIN_ID || BIN_ID === "YOUR_BIN_ID") {
-            console.warn("JSONBin تنظیم نشده، پاسخ ذخیره نمی‌شود");
-            return;
-        }
-        try {
-            const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                headers: { 'X-Master-Key': API_KEY }
-            });
-            const data = await getRes.json();
-            const record = data.record;
-            record.answer = answer;
-            record.answered = true;
-            record.time = new Date().toLocaleString('fa-IR');
-            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-                body: JSON.stringify(record)
-            });
-        } catch(e) { console.error("خطا در ذخیره پاسخ", e); }
-    }
-
-    // ========== منطق دکمه‌ها ==========
-    let answered = false;
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const responseDiv = document.getElementById('responseArea');
-
-    yesBtn.addEventListener('click', () => {
-        if (answered) return;
-        answered = true;
-        responseDiv.innerHTML = '😭💖 عاشقتم عزیز دلم! 💖😭 تا ابد مال منی...';
-        responseDiv.style.background = 'rgba(255,51,102,0.3)';
-        showModal();
-        saveAnswer('بله');
-        yesBtn.disabled = true;
-        noBtn.disabled = true;
-    });
-
-    let escapeCount = 0;
-    noBtn.addEventListener('mouseenter', () => {
-        if (answered) return;
-        const container = document.querySelector('.buttons');
-        const rect = noBtn.getBoundingClientRect();
-        const maxX = container.clientWidth - rect.width - 20;
-        const maxY = container.clientHeight - rect.height - 20;
-        const x = Math.random() * maxX;
-        const y = Math.random() * maxY;
-        noBtn.style.position = 'relative';
-        noBtn.style.left = `${x - 10}px`;
-        noBtn.style.top = `${y - 10}px`;
-        escapeCount++;
-        if (escapeCount > 3) {
-            responseDiv.innerHTML = '😂 عزیزم میدونم شوخیه! بیا بگو بله 😘';
-        }
-    });
-
-    noBtn.addEventListener('click', () => {
-        if (answered) return;
-        responseDiv.innerHTML = '💔 نه؟ دلم میگه دوسم داری! بیا دوباره جواب بده 💕';
-        noBtn.style.left = '0';
-        noBtn.style.top = '0';
-        noBtn.style.position = 'static';
-        saveAnswer('نه');
         setTimeout(() => {
-            if (!answered) responseDiv.innerHTML = '💕 منتظر جواب تو هستم عزیزم 💕';
-        }, 2500);
-    });
+            particle.remove();
+        }, 9000);
+    }
 
-    document.getElementById('clickHeart').addEventListener('click', () => {
-        createHeartExplosion();
-        responseDiv.innerHTML = '❤️ میبینی چقدر دوستت دارم؟ جوابمو بده ❤️';
+    setInterval(createHeartParticle, 300);
+
+    // شمارشگر لبخند با کلیک روی قلب تپنده یا کارت
+    let smileCounter = 0;
+    const smileCountSpan = document.getElementById('smileCount');
+    const beatingHeart = document.querySelector('.beating-heart');
+    const loveCard = document.querySelector('.love-card');
+
+    function addSmile() {
+        smileCounter++;
+        smileCountSpan.innerText = smileCounter;
+        // افکت اضافی: یک قلب موقت کوچک
+        const tempHeart = document.createElement('div');
+        tempHeart.innerText = '💖';
+        tempHeart.style.position = 'fixed';
+        tempHeart.style.left = '50%';
+        tempHeart.style.top = '50%';
+        tempHeart.style.fontSize = '40px';
+        tempHeart.style.opacity = '0.8';
+        tempHeart.style.pointerEvents = 'none';
+        tempHeart.style.zIndex = '999';
+        tempHeart.style.transition = 'all 0.5s ease';
+        tempHeart.style.transform = 'translate(-50%, -50%) scale(1)';
+        document.body.appendChild(tempHeart);
         setTimeout(() => {
-            if (!answered && responseDiv.innerHTML.includes('میبینی')) {
-                responseDiv.innerHTML = '💕 منتظر جواب تو هستم عزیزم 💕';
-            }
-        }, 3000);
+            tempHeart.style.transform = 'translate(-50%, -50%) scale(2)';
+            tempHeart.style.opacity = '0';
+            setTimeout(() => tempHeart.remove(), 500);
+        }, 10);
+    }
+
+    beatingHeart.addEventListener('click', addSmile);
+    loveCard.addEventListener('dblclick', addSmile); // دبل کلیک روی کارت هم لبخند میاره
+
+    // کلیک روی خاطره‌ها – یه جمله عاشقانه نشون بده (موقت)
+    const memories = document.querySelectorAll('.memory-img');
+    memories.forEach((mem, idx) => {
+        mem.addEventListener('click', () => {
+            const loveMessages = [
+                "یادش بخیر اون روز که بارون میومد و تو انقدر گرم بودی...",
+                "هنوز بوی قهوه‌ای که باهم خوردیم یادم نمی‌ره.",
+                "ماه اون شب واسه تو کم آورد، تو از ماه قشنگتری.",
+                "هر ستاره یه آرزوست، آرزوم اینه که همیشه باهم باشیم."
+            ];
+            const msg = loveMessages[idx % loveMessages.length];
+            // ساخت نوتیف کوچولو
+            const toast = document.createElement('div');
+            toast.innerText = msg;
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            toast.style.color = '#ffbbdd';
+            toast.style.padding = '12px 25px';
+            toast.style.borderRadius = '40px';
+            toast.style.fontFamily = "'Vazirmatn', sans-serif";
+            toast.style.fontWeight = 'bold';
+            toast.style.backdropFilter = 'blur(10px)';
+            toast.style.border = '1px solid #ff88aa';
+            toast.style.zIndex = '1000';
+            toast.style.fontSize = '0.9rem';
+            toast.style.whiteSpace = 'nowrap';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+            addSmile(); // همچنین یه لبخند هم اضافه کن
+        });
     });
 
-    // موزیک (اختیاری)
-    let audio = null;
-    let musicPlaying = false;
-    const musicBtn = document.getElementById('musicBtn');
-    musicBtn.addEventListener('click', () => {
-        if (!audio) {
-            audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-            audio.loop = true;
-            audio.volume = 0.2;
+    // نمایش پیام نهایی و جمله "مرسی تا تهش بودی"
+    const finalBtn = document.getElementById('showFinalBtn');
+    const finalMsgDiv = document.getElementById('finalMessage');
+
+    finalBtn.addEventListener('click', () => {
+        finalMsgDiv.classList.add('show');
+        // اسکرول به پیام نهایی
+        finalMsgDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // همزمان یه انفجار از قلب‌ها
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => createHeartParticle(), i * 40);
         }
-        if (musicPlaying) {
-            audio.pause();
-            musicBtn.innerHTML = '<i class="fas fa-music-slash"></i>';
-        } else {
-            audio.play().catch(e => console.log("audio play failed"));
-            musicBtn.innerHTML = '<i class="fas fa-music"></i>';
-        }
-        musicPlaying = !musicPlaying;
+        // تغییر متن دکمه بعد از کلیک (اختیاری)
+        finalBtn.innerText = 'همیشه با توام ❤️';
+        finalBtn.disabled = true;
+        finalBtn.style.opacity = '0.7';
+        finalBtn.style.cursor = 'default';
+        // اضافه کردن یه افکت صوتی خیالی؟ نه، ولی یه ویبریشن خفیف (اگر مرورگر اجازه بده)
+        if (navigator.vibrate) navigator.vibrate(200);
     });
+
+    // بار اول که صفحه لود شد یه مقدار قلب بیشتر بپاشه
+    for (let i = 0; i < 15; i++) {
+        setTimeout(createHeartParticle, i * 100);
+    }
+
+    // همچنین با اسکرول به پایین هم میشه پیام رو نشون داد (برای تاکید)
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY + window.innerHeight;
+        const pageHeight = document.body.scrollHeight;
+        if (scrollPosition > pageHeight - 200 && !finalMsgDiv.classList.contains('show')) {
+            // اختیاری نشون بده ولی بازم کاربر کنترل داره
+            // برای اینکه اذیت نشه، فقط اخطار نمیدیم. خودکار باز نمیکنیم تا دکمه مهم بمونه.
+        }
+    });
+
+    // یه متن اضافه زیر کارت: نمایش تاریخ و عشق
+    const footerNote = document.createElement('div');
+    footerNote.className = 'small-note';
+    footerNote.style.textAlign = 'center';
+    footerNote.style.marginTop = '15px';
+    footerNote.style.color = '#99aacc';
+    footerNote.innerHTML = `💌 ${new Date().toLocaleDateString('fa-IR')} - همیشه برای تو می‌تپم`;
+    document.querySelector('.love-card').appendChild(footerNote);
+
+    // اثر شیشه‌ای و زیبا برای پس‌زمینه کارت (تغییر خودکار رنگ نور)
+    setInterval(() => {
+        const hue = (Date.now() / 50) % 360;
+        document.querySelector('.love-card').style.borderImage = `linear-gradient(45deg, hsl(${hue}, 80%, 65%), hsl(${hue + 40}, 80%, 70%)) 1`;
+    }, 150);
 </script>
 </body>
 </html>
